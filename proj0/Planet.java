@@ -92,7 +92,7 @@ public class Planet {
 
 	public void draw() {
 		String imagePath = "./images/" + this.imgFileName;
-		StdDraw.picture(this.xxPos/(NBody.r)*100, this.yyPos/(NBody.r)*100, imagePath);	
+		StdDraw.picture(this.xxPos, this.yyPos, imagePath);	
 	}
 
 }

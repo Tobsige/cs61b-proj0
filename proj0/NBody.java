@@ -1,12 +1,11 @@
 public class NBody {
-	public static double r;
 	public static void main(String[] args) {
 		double T = Double.parseDouble(args[0]); 
 		double dt = Double.parseDouble(args[1]);
 		String filename = args[2];
 		String backGround = "./images/starfield.jpg";
 
-		r = readRadius(filename);
+		double r = readRadius(filename);
 		int num = readPlanets(filename).length;
 		Planet[] planets = new Planet[num]; 
 		System.arraycopy(readPlanets(filename), 0, planets, 0, num);
@@ -17,7 +16,7 @@ public class NBody {
 		double[] xForces = new double[num], yForces = new double[num];
 		Planet[] bodies = planets; 
 
-		StdDraw.setScale(-100, 100);
+		StdDraw.setScale(-r, r);
 		StdDraw.enableDoubleBuffering();
 
 		for(int k = 0; k < intT; k++) {
