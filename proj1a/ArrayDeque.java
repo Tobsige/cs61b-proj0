@@ -6,7 +6,7 @@
 public class ArrayDeque<T> {
     private int length;
     private T[] items;
-    private int max = 100;
+    private int max = 16;
     private T def;     //default
     private double ratio = 0.25;
 
@@ -17,10 +17,10 @@ public class ArrayDeque<T> {
     }
 
     private void resize() {
-        T[] a = (T []) new Object[max * 5];
+        T[] a = (T []) new Object[max * 2];
         System.arraycopy(items, 0, a, 0, length);
         items = a;
-        max = max * 5;
+        max = max * 2;
     }
 
     public void addFirst(T item) {
@@ -67,12 +67,12 @@ public class ArrayDeque<T> {
         } else {
             T b = items[0];
             length -= 1;
-            if (length / max < ratio) {
+            if (((double)length / max) < ratio) {
                 max = max / 2;
             }
 
             T[] a = (T []) new Object[max];
-            System.arraycopy(items, 1, a, 0, length - 1);
+            System.arraycopy(items, 1, a, 0, length);
             items = a;
 
             return b;
@@ -85,13 +85,13 @@ public class ArrayDeque<T> {
         } else {
             length -= 1;
             T result = items[length];
-            if ((length) / max < ratio) {
+            if (((double)length / max) < ratio) {
                 max = max / 2;
                 T[] a = (T []) new Object[max];
                 System.arraycopy(items, 0, a, 0, length);
                 items = a;
             } else {
-                items[length] = def;
+                items[length] = null;
             }
             return result;
         }
