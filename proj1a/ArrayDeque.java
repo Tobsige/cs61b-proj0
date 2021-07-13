@@ -17,10 +17,10 @@ public class ArrayDeque<T> {
     }
 
     private void resize() {
-        T[] a = (T []) new Object[max * 16];
+        T[] a = (T []) new Object[max * 2];
         System.arraycopy(items, 0, a, 0, length);
         items = a;
-        max = max * 16;
+        max = max * 2;
     }
 
     public void addFirst(T item) {
