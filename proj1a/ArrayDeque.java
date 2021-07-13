@@ -6,7 +6,7 @@
 public class ArrayDeque<T> {
     private int length;
     private T[] items;
-    private int max = 64;
+    private int max = 16;
     private T def;     //default
     private double ratio = 0.25;
 
@@ -17,10 +17,10 @@ public class ArrayDeque<T> {
     }
 
     private void resize() {
-        T[] a = (T []) new Object[max * 8];
+        T[] a = (T []) new Object[max * 16];
         System.arraycopy(items, 0, a, 0, length);
         items = a;
-        max = max * 8;
+        max = max * 16;
     }
 
     public void addFirst(T item) {
