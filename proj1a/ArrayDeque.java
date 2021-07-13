@@ -68,7 +68,7 @@ public class ArrayDeque<T> {
             T b = items[0];
             length -= 1;
             if (((double) length / max) < ratio && max > 16) {
-                max = max / 2;
+                max = max / 4;
             }
 
             T[] a = (T []) new Object[max];
@@ -86,7 +86,7 @@ public class ArrayDeque<T> {
             length -= 1;
             T result = items[length];
             if (((double) length / max) < ratio && max > 16) {
-                max = max / 2;
+                max = max / 4;
                 T[] a = (T []) new Object[max];
                 System.arraycopy(items, 0, a, 0, length);
                 items = a;
