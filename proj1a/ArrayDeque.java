@@ -102,8 +102,10 @@ public class ArrayDeque<T> {
         } else {
             T b = items[zeroP];
             items[zeroP] = null;
-            zeroP = addOne(zeroP);
             length -= 1;
+            if (length != 0) {
+                zeroP = addOne(zeroP);
+            }
 
             if (((double) length / max) < ratio && max > 16) {
                 resize(false);
@@ -120,7 +122,9 @@ public class ArrayDeque<T> {
             length -= 1;
             T result = items[lastP];
             items[lastP] = null;
-            lastP = minusOne(lastP);
+            if (length != 0) {
+                lastP = minusOne(lastP);
+            }
 
             if (((double) length / max) < ratio && max > 16) {
                 resize(false);
