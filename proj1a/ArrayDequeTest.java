@@ -7,7 +7,7 @@ public class ArrayDequeTest {
 
     public static void addRemoveTest() {
         ArrayDeque<Integer> a = new ArrayDeque<>();
-        /*
+
         a.addLast(0);
         a.get(0);
         a.addLast(2);
@@ -34,13 +34,12 @@ public class ArrayDequeTest {
         int b = a.get(0);
         a.removeFirst();
         boolean c = a.isEmpty();
-        int d = a.get(0);
 
-         */
 
-        boolean b = a.isEmpty();
-//        int c = a.get(0);
-        System.out.println(a.get(0));
+
+
+        boolean e = a.isEmpty();
+
     }
 
     public static void main(String[] args) {
