@@ -20,6 +20,7 @@ public class ArrayDeque<T> {
     //need right pointers
     //change max, zeroP, lastP in function
     private void resize(boolean b) {
+        int maxO = max;
         max = b ? max * 2 : max / 2;
         T[] a = (T []) new Object[max];
 
@@ -27,8 +28,8 @@ public class ArrayDeque<T> {
         if (zeroP <= lastP) {
             System.arraycopy(items, zeroP, a, 0, length);
         } else {
-            System.arraycopy(items, zeroP, a, 0, max - zeroP);
-            System.arraycopy(items, 0, a, max - zeroP, lastP + 1);
+            System.arraycopy(items, zeroP, a, 0, maxO - zeroP);
+            System.arraycopy(items, 0, a, maxO - zeroP, lastP + 1);
         }
 
         zeroP = 0;
