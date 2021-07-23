@@ -33,6 +33,7 @@ public class TestPalindrome {
         assertTrue(palindrome.isPalindrome("soolnpt", cc));
     }
 
+    @Test
     public void testIsPalindrome() {
         assertFalse(palindrome.isPalindrome("cat"));
         assertTrue(palindrome.isPalindrome(""));
@@ -44,6 +45,7 @@ public class TestPalindrome {
 
         assertTrue(palindrome.isPalindrome("racecar"));
         assertTrue(palindrome.isPalindrome("raceecar"));
+        assertFalse(palindrome.isPalindrome("ab"));
 
         assertTrue(palindrome.isPalindrome("racewghgwecar"));
         assertFalse(palindrome.isPalindrome("racewghqgwecar"));

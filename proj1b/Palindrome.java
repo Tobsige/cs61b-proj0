@@ -53,7 +53,7 @@ public class Palindrome {
         return isPldrObo(wd, cc);
     }
 
-    public boolean isPldrObo(Deque d, CharacterComparator cc) {
+    private boolean isPldrObo(Deque d, CharacterComparator cc) {
         int len = d.size();
         if (len == 1 || len == 0) {
             return true;
