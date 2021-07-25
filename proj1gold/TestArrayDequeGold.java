@@ -6,7 +6,7 @@ public class TestArrayDequeGold {
         for (int i = 0; i < slo.size(); i++) {
             int x = (int) stu.removeFirst(), y = (int) slo.removeFirst();
 
-            String msg = "student was " + x +", correct was " + y;
+            String msg = "There are problems in addFirst(), student was " + x +", correct was " + y;
             assertEquals(msg, y, x);
         }
     }
@@ -44,8 +44,6 @@ public class TestArrayDequeGold {
         StudentArrayDeque<Integer> sad1 = new StudentArrayDeque<>();
         ArrayDequeSolution<Integer> hp = new ArrayDequeSolution<>();
 
-        addItem(sad1, hp, 100);
-        removeItem(sad1, hp, 99);
         for (int i = 0; i < 20; i++) {
             sad1.addFirst(i);
             hp.addFirst(i);
