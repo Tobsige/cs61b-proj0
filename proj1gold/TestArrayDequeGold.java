@@ -2,110 +2,85 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 public class TestArrayDequeGold {
-    private void compareDeques(StudentArrayDeque stu, ArrayDequeSolution slo, String mthd) {
-        for (int i = 0; i < slo.size(); i++) {
-            int x = (int) stu.removeFirst(), y = (int) slo.removeFirst();
-
-            String msg = "There are problems in " + mthd + ", student was " + x +", correct was " + y;
-            assertEquals(msg, y, x);
-        }
+    public String msg = null;
+    private void compareDeques(StudentArrayDeque stu, ArrayDequeSolution slo) {
+        int x = (int) stu.removeFirst(), y = (int) slo.removeFirst();
+        assertEquals(msg, y, x);
     }
 
-    private void addItem(StudentArrayDeque stu, ArrayDequeSolution slo, int n) {
+    private void addItemR(StudentArrayDeque stu, ArrayDequeSolution slo, int n) {
         for (int i = 0; i < n; i += 1) {
             double num = StdRandom.uniform();
 
             if (num < 0.5) {
                 stu.addLast(i);
                 slo.addLast(i);
+                msg = msg + "addLast(" + i + ")\n";
             } else {
                 stu.addFirst(i);
                 slo.addFirst(i);
+                msg = msg + "addFirst(" + i + ")\n";
             }
         }
     }
 
-    private void removeItem(StudentArrayDeque stu, ArrayDequeSolution slo, int n) {
+    private void removeItemR(StudentArrayDeque stu, ArrayDequeSolution slo, int n) {
         for (int i = 0; i < n; i += 1) {
             double num = StdRandom.uniform();
 
-            if (num < -0.5) {
-                stu.removeFirst();
-                slo.removeFirst();
-            } else {
+            if (num < 0.5) {
                 stu.removeLast();
                 slo.removeLast();
+                msg = msg + "removeLast()\n";
+            } else {
+                stu.removeFirst();
+                slo.removeFirst();
+                msg = msg + "removeFirst()\n";
             }
         }
     }
 
-    @Test
-    public void addT() {
-        StudentArrayDeque<Integer> sad1 = new StudentArrayDeque<>();
-        ArrayDequeSolution<Integer> hp = new ArrayDequeSolution<>();
-
-        addItem(sad1, hp, 100);
-        removeItem(sad1, hp, 99);
-
-
-        for (int i = 0; i < 20; i++) {
-            sad1.addFirst(i);
-            hp.addFirst(i);
+    private void addItem(StudentArrayDeque stu, ArrayDequeSolution slo, int n, boolean l) {
+        if (l) {
+            for (int i = 0; i < n; i += 1) {
+                stu.addLast(i);
+                slo.addLast(i);
+                msg = msg + "addLast(" + i + ")\n";
+            }
+        } else {
+            for (int i = 0; i < n; i += 1) {
+                stu.addFirst(i);
+                slo.addFirst(i);
+                msg = msg + "addFirst(" + i + ")\n";
+            }
         }
+    }
 
-        String mthd = "addFirst";
-        compareDeques(sad1, hp, mthd);
+    private void removeItem(StudentArrayDeque stu, ArrayDequeSolution slo, int n, boolean l) {
+        if (l) {
+            for (int i = 0; i < n; i += 1) {
+                msg = msg + "removeLast()\n";
+                int x = (int) stu.removeLast(), y = (int) slo.removeLast();
+                assertEquals(msg, y, x);
+            }
+        } else {
+            for (int i = 0; i < n; i += 1) {
+                msg = msg + "removeFirst()\n";
+                int x = (int) stu.removeFirst(), y = (int) slo.removeFirst();
+                assertEquals(msg, y, x);
+            }
+        }
 
     }
 
+
     @Test
-    public void addLT() {
+    public void testMthd() {
+        msg = null;
         StudentArrayDeque<Integer> sad1 = new StudentArrayDeque<>();
         ArrayDequeSolution<Integer> hp = new ArrayDequeSolution<>();
 
-        addItem(sad1, hp, 100);
-        removeItem(sad1, hp, 100);
-
-        for (int i = 0; i < 20; i++) {
-            sad1.addLast(i);
-            hp.addLast(i);
-        }
-        String mthd1 = "addLast";
-        compareDeques(sad1, hp, mthd1);
+        addItemR(sad1, hp, 100);
+        removeItem(sad1, hp, 100, false);
     }
-
-    @Test
-    public void rmvT() {
-        StudentArrayDeque<Integer> sad1 = new StudentArrayDeque<>();
-        ArrayDequeSolution<Integer> hp = new ArrayDequeSolution<>();
-
-        //addItem(sad1, hp, 100);
-        //removeItem(sad1, hp, 100);
-
-        addItem(sad1, hp, 100);
-        for (int i = 0; i < 90; i++) {
-            sad1.removeFirst();
-            hp.removeFirst();
-        }
-        String mthd1 = "removeFirst";
-        compareDeques(sad1, hp, mthd1);
-    }
-
-    @Test
-    public void rmvLT() {
-        StudentArrayDeque<Integer> sad1 = new StudentArrayDeque<>();
-        ArrayDequeSolution<Integer> hp = new ArrayDequeSolution<>();
-
-        //addItem(sad1, hp, 100);
-        //removeItem(sad1, hp, 100);
-
-        addItem(sad1, hp, 100);
-        for (int i = 0; i < 90; i++) {
-            sad1.removeLast();
-            hp.removeLast();
-        }
-        String mthd1 = "removeLast";
-        compareDeques(sad1, hp, mthd1);
-    }
-
 }
