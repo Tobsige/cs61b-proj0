@@ -22,9 +22,9 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      */
     public void enqueue(T x) {
 
-        if(isFull()) {
+        if (isFull()) {
             throw new RuntimeException("Ring buffer overflow");
-        } else if(!isEmpty()){
+        } else if (!isEmpty()) {
             last = plusOne(last);
             rb[last] = x;
             fillCount += 1;
@@ -44,7 +44,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * covered Monday.
      */
     public T dequeue() {
-        if(isEmpty()) {
+        if (isEmpty()) {
             throw new RuntimeException("Ring buffer underflow");
         }
         T item = rb[first];
@@ -58,6 +58,9 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
      * Return oldest item, but don't remove it.
      */
     public T peek() {
+        if (isEmpty()) {
+            throw new RuntimeException("Ring buffer underflow");
+        }
         return rb[first];
     }
 
@@ -65,9 +68,9 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
     public Iterator<T> iterator() {
         return new KeyIterator();
     }
-    private class KeyIterator implements Iterator<T>{
+    private class KeyIterator implements Iterator<T> {
         private int poz;
-        public KeyIterator() {
+        KeyIterator() {
             poz = first;
         }
         @Override

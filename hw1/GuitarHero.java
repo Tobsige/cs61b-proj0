@@ -14,13 +14,13 @@ public class GuitarHero {
             if (StdDraw.hasNextKeyTyped()) {
                 char key = StdDraw.nextKeyTyped();
                 int index = keyboard.indexOf(key);
-                if(index != -1) {
+                if (index != -1) {
                     double concert = CONCERT_A * Math.pow(2, ((double) index - 24.0) / 12.0);
                     stringW = new synthesizer.GuitarString(concert);
 
                     stringW.pluck();
 
-                } else if(key == 'a') {
+                } else if (key == 'a') {
                     stringA.pluck();
                 }
             }
