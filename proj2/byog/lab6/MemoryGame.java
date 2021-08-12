@@ -92,11 +92,16 @@ public class MemoryGame {
     public String solicitNCharsInput(int n) {
         //TODO: Read n letters of player input
         String s = "";
+        int poz = 20 - n / 2;
         for(int i = 0; i < n; i++) {
             while (!StdDraw.hasNextKeyTyped()) {
             }
             char c = StdDraw.nextKeyTyped();
+            String cs = Character.toString(c);
+            StdDraw.text(poz, 30, cs);
+
             s += c;
+            poz += 1;
         }
         return s;
     }
