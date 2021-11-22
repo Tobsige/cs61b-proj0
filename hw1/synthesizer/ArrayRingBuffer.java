@@ -33,7 +33,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
             fillCount += 1;
         }
     }
-    public int plusOne(int a) {
+    private int plusOne(int a) {
         int b = (a < (capacity - 1) ? (a + 1) : 0);
         return b;
     }

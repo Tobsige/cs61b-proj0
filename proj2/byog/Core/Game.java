@@ -27,6 +27,7 @@ public class Game {
      * @param input the input string to feed to your program
      * @return the 2D TETile[][] representing the state of the world
      */
+    //2D, pseudorandomly generated, rooms and hallways and outdoor spaces, include turns, a random number of rooms and hallways
     public TETile[][] playWithInputString(String input) {
         // TODO: Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
