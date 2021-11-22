@@ -5,10 +5,10 @@ import edu.princeton.cs.introcs.StdStats;
 
 public class PercolationStats {
 
-    public Percolation pcf;
-    public int len;
-    public int numTest;
-    public int[] exp;
+    private Percolation pcf;
+    private int len;
+    private int numTest;
+    private int[] exp;
 
     /**
      * perform T independent experiments on an N-by-N grid

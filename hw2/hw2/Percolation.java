@@ -1,9 +1,7 @@
 package hw2;
 
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
-import edu.princeton.cs.introcs.StdRandom;
 
 public class Percolation {
 
@@ -59,6 +57,7 @@ public class Percolation {
                     overall.union(id, indexN);
                 }
             } catch (IndexOutOfBoundsException e) {
+                continue;
             }
         }
     }
@@ -93,7 +92,7 @@ public class Percolation {
             }
         }
         return false;
-    }// is the site (row, col) full?
+    } // is the site (row, col) full?
 
     public int numberOfOpenSites() {
         return numOpen;
