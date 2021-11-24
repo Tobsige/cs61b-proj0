@@ -28,11 +28,11 @@ public class PercolationStats {
     }
 
     private void experiments() {
-        int a = len * len / 3, b = a * 2;
+        int a = len * len / 2;
         for (int i = 0; i < numTest; i++) {
             Percolation p = pcf.make(len);
+            int numOpen = a;
             while (true) {
-                int numOpen = StdRandom.uniform(a, b);
                 for (int j = 0; j < numOpen;) {
                     int x = StdRandom.uniform(len), y = StdRandom.uniform(len);
                     if (p.isOpen(x, y)) {
@@ -40,11 +40,16 @@ public class PercolationStats {
                     }
                     p.open(x, y);
                     j++;
+                    if (p.percolates()) {
+                        exp[i] = numOpen;
+                        break;
+                    }
                 }
                 if (p.percolates()) {
                     exp[i] = numOpen;
                     break;
                 }
+                a = a + a / 10;
             }
         }
     }
@@ -79,6 +84,12 @@ public class PercolationStats {
      */
     public double confidenceHigh() {
         return mean() + 1.96 * stddev() / Math.sqrt(numTest);
+    }
+
+    public static void main (String args[]) {
+        PercolationFactory pc = new PercolationFactory();
+        PercolationStats p = new PercolationStats(10, 20, pc);
+        System.out.println(p.mean());
     }
 
 }

@@ -97,7 +97,7 @@ public class Percolation {
         }
         for (int i = 0; i < len; i++) {
             int id = startBottomIndex + i;
-            if(orav[id]) {
+            if (orav[id]) {
                 if (isFull(len - 1, i)) {
                     overall.union(id, bottom);
                     return true;
