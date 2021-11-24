@@ -3,8 +3,6 @@ package hw2;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
-import java.util.HashSet;
-
 public class Percolation {
 
     private WeightedQuickUnionUF overall;
@@ -13,6 +11,7 @@ public class Percolation {
     private double p = 0.5;
     private int numOpen = 0;
     private int top, bottom;
+    private int startBottomIndex;
 
     public Percolation(int N) {
         if (N <= 0) {
@@ -20,9 +19,10 @@ public class Percolation {
         }
         top = N * N;
         bottom = top + 1;
-        overall = new WeightedQuickUnionUF(bottom + 1);
+        overall = new WeightedQuickUnionUF(top + 2);
         orav = new boolean[N * N];
         len = N;
+        startBottomIndex = (len - 1) * len;
     }               // create N-by-N grid, with all sites initially blocked
 
     public void open(int row, int col) {
@@ -35,9 +35,6 @@ public class Percolation {
         }
         orav[index] = true;
         numOpen += 1;
-        if (row == len - 1) {
-            overall.union(xyTo1D(row, col), bottom);
-        }
         if (row == 0) {
             overall.union(col, top);
         }
@@ -86,18 +83,8 @@ public class Percolation {
         if (row >= len || col >= len || row < 0 || col < 0) {
             throw new IndexOutOfBoundsException("Out of index range!");
         }
-        if (row == 0 && orav[col]) {
-            return true;
-        }
         int id = xyTo1D(row, col);
-        for (int i = 0; i < len; i++) {
-            if (orav[i]) {
-                if (overall.connected(i, id)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return overall.connected(id, top);
     } // is the site (row, col) full?
 
     public int numberOfOpenSites() {
@@ -105,7 +92,19 @@ public class Percolation {
     }          // number of open sites
 
     public boolean percolates() {
-        return overall.connected(top, bottom);
+        if (overall.connected(top, bottom)) {
+            return true;
+        }
+        for (int i = 0; i < len; i++) {
+            int id = startBottomIndex + i;
+            if(orav[id]) {
+                if (isFull(len - 1, i)) {
+                    overall.union(id, bottom);
+                    return true;
+                }
+            }
+        }
+        return false;
     }             // does the system percolate?
 
     private int xyTo1D(int r, int c) {
@@ -126,8 +125,11 @@ public class Percolation {
             int j = in.readInt();
             perc.open(i, j);
         } */
-        perc.open(2,2);
-        perc.open(0,2);
-        boolean a = perc.percolates();
+        perc.open(2, 2);
+        perc.open(1, 2);
+        perc.open(0, 2);
+        perc.open(2, 0);
+
+        boolean a = perc.isFull(2, 0);
     }
 }
