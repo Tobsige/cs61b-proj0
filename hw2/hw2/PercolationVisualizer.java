@@ -61,7 +61,7 @@ public class PercolationVisualizer {
     }
 
     private static void simulateFromFile(String filename) {
-        In in = new In(filename);
+        In in = new In("./inputFiles/" + filename);
         int N = in.readInt();
         Percolation perc = new Percolation(N);
 

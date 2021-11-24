@@ -3,6 +3,8 @@ package hw2;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
+import java.util.HashSet;
+
 public class Percolation {
 
     private WeightedQuickUnionUF overall;
@@ -10,14 +12,15 @@ public class Percolation {
     private int len;
     private double p = 0.5;
     private int numOpen = 0;
-    private boolean[] checkPBtm;
+    private int top, bottom;
 
     public Percolation(int N) {
         if (N <= 0) {
             throw new IllegalArgumentException("N should be greater than 0.");
         }
-        overall = new WeightedQuickUnionUF(N * N);
-        checkPBtm = new boolean[N];
+        top = N * N;
+        bottom = top + 1;
+        overall = new WeightedQuickUnionUF(bottom + 1);
         orav = new boolean[N * N];
         len = N;
     }               // create N-by-N grid, with all sites initially blocked
@@ -33,7 +36,10 @@ public class Percolation {
         orav[index] = true;
         numOpen += 1;
         if (row == len - 1) {
-            checkPBtm[col] = true;
+            overall.union(xyTo1D(row, col), bottom);
+        }
+        if (row == 0) {
+            overall.union(col, top);
         }
         checkUnion(row, col, index);
     }      // open the site (row, col) if it is not open already
@@ -99,15 +105,7 @@ public class Percolation {
     }          // number of open sites
 
     public boolean percolates() {
-        int row = len - 1;
-        for (int col = 0; col < len; col++) {
-            if (checkPBtm[col]) {
-                if (isFull(row, col)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return overall.connected(top, bottom);
     }             // does the system percolate?
 
     private int xyTo1D(int r, int c) {
@@ -120,12 +118,16 @@ public class Percolation {
     public static void main(String[] args) {
         String filename = "./inputFiles/input3.txt";
         In in = new In(filename);
-        int N = in.readInt();
+        int N = 3;
         Percolation perc = new Percolation(N);
+        /**
         while (!in.isEmpty()) {
             int i = in.readInt();
             int j = in.readInt();
             perc.open(i, j);
-        }
+        } */
+        perc.open(2,2);
+        perc.open(0,2);
+        boolean a = perc.percolates();
     }
 }

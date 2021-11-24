@@ -5,7 +5,7 @@ import edu.princeton.cs.introcs.StdStats;
 
 public class PercolationStats {
 
-    private Percolation pcf;
+    private PercolationFactory pcf;
     private int len;
     private int numTest;
     private int[] exp;
@@ -20,7 +20,7 @@ public class PercolationStats {
         if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException("N and T should be greater than 0.");
         }
-        pcf = pf.make(N);
+        pcf = pf;
         len = N;
         numTest = T;
         exp = new int[T];
@@ -30,8 +30,7 @@ public class PercolationStats {
     private void experiments() {
         int a = len * len / 3, b = a * 2;
         for (int i = 0; i < numTest; i++) {
-            PercolationFactory pcfT = new PercolationFactory();
-            Percolation p = pcfT.make(len);
+            Percolation p = pcf.make(len);
             while (true) {
                 int numOpen = StdRandom.uniform(a, b);
                 for (int j = 0; j < numOpen;) {
