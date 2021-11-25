@@ -45,6 +45,10 @@ public class PercolationStats {
                         break;
                     }
                 }
+                if (p.percolates()) {
+                    exp[i] = numOpen;
+                    break;
+                }
                 a = a + len;
             }
         }
