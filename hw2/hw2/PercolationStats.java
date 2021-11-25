@@ -28,7 +28,7 @@ public class PercolationStats {
     }
 
     private void experiments() {
-        int a = len * len / 4;
+        int a = len * len / 2;
         for (int i = 0; i < numTest; i++) {
             Percolation p = pcf.make(len);
             int numOpen = a;
