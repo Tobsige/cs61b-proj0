@@ -6,6 +6,7 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
 
     private WeightedQuickUnionUF overall;
+    private WeightedQuickUnionUF overallV;
     private boolean[] orav;
     private int len;
     private double p = 0.5;
@@ -19,7 +20,8 @@ public class Percolation {
         }
         top = N * N;
         bottom = top + 1;
-        overall = new WeightedQuickUnionUF(top + 2);
+        overallV = new WeightedQuickUnionUF(top + 2);
+        overall = new WeightedQuickUnionUF(top + 1);
         orav = new boolean[N * N];
         len = N;
         startBottomIndex = (len - 1) * len;
@@ -37,6 +39,10 @@ public class Percolation {
         numOpen += 1;
         if (row == 0) {
             overall.union(col, top);
+            overallV.union(col, top);
+        }
+        if (row == len - 1) {
+            overallV.union(startBottomIndex + col, bottom);
         }
         checkUnion(row, col, index);
     }      // open the site (row, col) if it is not open already
@@ -58,6 +64,7 @@ public class Percolation {
                 int indexN = xyTo1D(neighbor[i][0], neighbor[i][1]);
                 if (orav[indexN]) {
                     overall.union(id, indexN);
+                    overallV.union(id, indexN);
                 }
             } catch (IndexOutOfBoundsException e) {
                 continue;
@@ -92,20 +99,11 @@ public class Percolation {
     }          // number of open sites
 
     public boolean percolates() {
-        if (overall.connected(top, bottom)) {
+        if (overallV.connected(top, bottom)) {
             return true;
         }
-        for (int i = 0; i < len; i++) {
-            int id = startBottomIndex + i;
-            if (orav[id]) {
-                if (isFull(len - 1, i)) {
-                    overall.union(id, bottom);
-                    return true;
-                }
-            }
-        }
         return false;
-    }             // does the system percolate?
+    }
 
     private int xyTo1D(int r, int c) {
         if (r >= len || c >= len || r < 0 || c < 0) {

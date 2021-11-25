@@ -28,7 +28,7 @@ public class PercolationStats {
     }
 
     private void experiments() {
-        int a = len * len / 2;
+        int a = len * len / 4;
         for (int i = 0; i < numTest; i++) {
             Percolation p = pcf.make(len);
             int numOpen = a;
@@ -45,11 +45,7 @@ public class PercolationStats {
                         break;
                     }
                 }
-                if (p.percolates()) {
-                    exp[i] = numOpen;
-                    break;
-                }
-                a = a + a / 10;
+                a = a + len;
             }
         }
     }
@@ -85,5 +81,4 @@ public class PercolationStats {
     public double confidenceHigh() {
         return mean() + 1.96 * stddev() / Math.sqrt(numTest);
     }
-
 }
