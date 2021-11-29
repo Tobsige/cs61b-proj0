@@ -1,13 +1,12 @@
 package lab9;
 
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  *  A hash table-backed Map implementation. Provides amortized constant time
  *  access to elements via get(), remove(), and put() in the best case.
  *
- *  @author Your name here
+ *  @author Xueyi Wang
  */
 public class MyHashMap<K, V> implements Map61B<K, V> {
 
@@ -16,6 +15,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     private ArrayMap<K, V>[] buckets;
     private int size;
+    private int maxSize;
+    private Set<K> keys;
 
     private int loadFactor() {
         return size / buckets.length;
@@ -30,6 +31,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     @Override
     public void clear() {
         this.size = 0;
+        maxSize = DEFAULT_SIZE;
+        keys = new TreeSet<>();
         for (int i = 0; i < this.buckets.length; i += 1) {
             this.buckets[i] = new ArrayMap<>();
         }
@@ -53,19 +56,52 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     @Override
     public V get(K key) {
-        throw new UnsupportedOperationException();
+        int hashCode = hash(key);
+        return buckets[hashCode].get(key);
     }
 
     /* Associates the specified value with the specified key in this map. */
     @Override
     public void put(K key, V value) {
-        throw new UnsupportedOperationException();
+        int hashCode = hash(key);
+        if (get(key) == null) {
+            size += 1;
+        }
+        buckets[hashCode].put(key, value);
+        keys.add(key);
+        if (loadFactor() > MAX_LF) {
+            resize();
+        }
+    }
+
+    private void resize() {
+        maxSize = maxSize * 2;
+        ArrayMap<K, V>[] newBuckets = new ArrayMap[maxSize];
+        for (int i = 0; i < maxSize; i += 1) {
+            newBuckets[i] = new ArrayMap<>();
+        }
+        Iterator<K> bucketIterator = iterator();
+        while (bucketIterator.hasNext()) {
+            K key = bucketIterator.next();
+            int newHashCode = newHash(key);
+            V val = get(key);
+            newBuckets[newHashCode].put(key, val);
+        }
+        buckets = newBuckets;
+    }
+
+    private int newHash(K key) {
+        if (key == null) {
+            return 0;
+        }
+        int numBuckets = maxSize;
+        return Math.floorMod(key.hashCode(), numBuckets);
     }
 
     /* Returns the number of key-value mappings in this map. */
     @Override
     public int size() {
-        throw new UnsupportedOperationException();
+        return size;
     }
 
     //////////////// EVERYTHING BELOW THIS LINE IS OPTIONAL ////////////////
@@ -73,7 +109,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     /* Returns a Set view of the keys contained in this map. */
     @Override
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        return keys;
     }
 
     /* Removes the mapping for the specified key from this map if exists.
@@ -94,6 +130,35 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public Iterator<K> iterator() {
-        throw new UnsupportedOperationException();
+        return new HashMapIterator(maxSize);
+    }
+
+    private class HashMapIterator<K> implements Iterator<K> {
+        private int wizPos;
+        private K[] keyAll;
+
+        public HashMapIterator(int length) {
+            wizPos = 0;
+            getKey();
+        }
+
+        public boolean hasNext() {
+            return wizPos < size;
+        }
+
+        private void getKey() {
+            keyAll = (K[]) keySet().toArray();
+        }
+
+        public K next() {
+            K returnItem = keyAll[wizPos];
+            wizPos += 1;
+            return returnItem;
+        }
+    }
+
+    public static void main (String args[]) {
+        int[] a = new int[]{1,2,3};
+        System.out.println(a.length);
     }
 }
