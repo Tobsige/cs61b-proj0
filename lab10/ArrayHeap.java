@@ -27,24 +27,21 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      * Returns the index of the node to the left of the node at i.
      */
     private static int leftIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return i * 2;
     }
 
     /**
      * Returns the index of the node to the right of the node at i.
      */
     private static int rightIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return i * 2 + 1;
     }
 
     /**
      * Returns the index of the node that is the parent of the node at i.
      */
     private static int parentIndex(int i) {
-        /* TODO: Your code here! */
-        return 0;
+        return i / 2;
     }
 
     /**
@@ -104,22 +101,48 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      * Bubbles up the node currently at the given index.
      */
     private void swim(int index) {
+        int idParent = parentIndex(index);
+        if (idParent < 1) {
+            return;
+        }
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
 
-        /** TODO: Your code here. */
-        return;
+        if (contents[index].myPriority >= contents[idParent].myPriority) {
+            return;
+        }
+        swap(index, idParent);
+        swim(idParent);
     }
 
     /**
      * Bubbles down the node currently at the given index.
      */
     private void sink(int index) {
+        int idLeft = leftIndex(index), idRight = rightIndex(index), idSink;
+        if (idLeft > size) {
+            return;
+        } // Last row
         // Throws an exception if index is invalid. DON'T CHANGE THIS LINE.
         validateSinkSwimArg(index);
 
-        /** TODO: Your code here. */
-        return;
+        if (idRight > size) {
+            if (contents[idLeft].myPriority < contents[index].myPriority) {
+                swap(index, idLeft);
+            }
+            return;
+        } // incomplete
+        Node l = getNode(idLeft), r = getNode(idRight), now = getNode(index);
+        if (now.myPriority <= l.myPriority && now.myPriority <= r.myPriority) {
+            return;
+        }
+        if (l.myPriority < r.myPriority) {
+            idSink = idLeft;
+        } else {
+            idSink = idRight;
+        }
+        swap(index, idSink);
+        sink(idSink);
     }
 
     /**
@@ -133,7 +156,10 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             resize(contents.length * 2);
         }
 
-        /* TODO: Your code here! */
+        Node nd = new Node(item, priority);
+        contents[size + 1] = nd;
+        size += 1;
+        swim(size);
     }
 
     /**
@@ -142,8 +168,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T peek() {
-        /* TODO: Your code here! */
-        return null;
+        return contents[1].myItem;
     }
 
     /**
@@ -157,8 +182,15 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
-        /* TODO: Your code here! */
-        return null;
+        if (size == 0) {
+            return null;
+        }
+        T item = contents[1].myItem;
+        swap(1, size);
+        contents[size] = null;
+        size -= 1;
+        sink(1);
+        return item;
     }
 
     /**
@@ -180,8 +212,16 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public void changePriority(T item, double priority) {
-        /* TODO: Your code here! */
-        return;
+        int i = 1;
+        while (!contents[i].myItem.equals(item)) {
+            i++;
+            if (i > size) {
+                return;
+            }
+        }
+        contents[i].myPriority = priority;
+        sink(i);
+        swim(i);
     }
 
     /**
@@ -256,7 +296,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
     /** Helper function to resize the backing array when necessary. */
     private void resize(int capacity) {
         Node[] temp = new ArrayHeap.Node[capacity];
-        for (int i = 1; i < this.contents.length; i++) {
+        for (int i = 1; i < contents.length; i++) {
             temp[i] = this.contents[i];
         }
         this.contents = temp;
